@@ -4,12 +4,13 @@ VALUES (1, " SALES"),
        (3, "FINANCE"),
        (4, "LEGAL"),
 
-INSERT INTO reviews (movie_id, review)
-VALUES (1, ""),
-       (2, ""),
-       (1, "Scar is the lion everyone loves to hate"),
-       (3, "Ten years of ballet and three years of tap to join a gang in this neighborhood"),
-       (5, "The tin man gave a metallic, hollow performance"),
-       (1, "Hakuna matata"),
-       (5, "Those flying monkeys are nightmare fuel!");
+INSERT INTO roles (roles_id, title, department, salary)
+VALUES (1, "Sales Lead", "Sales", 10),
+       (2, "Salesperson", "Sales", 15),
+       (3, "Lead Engineer", "Engineering", 23),
+       (4, "Software Engineer", "Engineering", 45),
+       (5, "Account Manager", "Finance", 50),
+       (6, "Accountant", "Finance", 78),
+       (7, "Legal Team Lead", "Legal", 32)
+       (8, "Lawyer", "Legal", 78)
        
