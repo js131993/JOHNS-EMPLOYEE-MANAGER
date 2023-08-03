@@ -70,7 +70,7 @@ const updateEmployeeRole = [
   {
     name: "pickEmployee",
     type: "list",
-    message: "Select the employee you would like to update."
+    message: "Select the employee you would like to update.",
     choices: [employees],
   },
   {
@@ -81,16 +81,22 @@ const updateEmployeeRole = [
   }
 ];
 
-viewEmployees() {
+function viewEmployees() {
   const sql = "SELECT * from view_all_employees";
   db.query(sql, params, (err, result) => {
     if (err) {
       res.status(400).json({ error: err.message });
       return;
     };
-  };
 
-  viewRoles() {
+//having trouble building function
+function addEmployeeFunction () {
+  inquirer
+    .prompt(addEmployee)
+    .then
+}
+
+  function viewRoles() {
     const sql = "SELECT * FROM rolels";
     db.query(sql, params, (err, result) => {
       if (err) {
@@ -100,7 +106,7 @@ viewEmployees() {
     }
   };
 
-  viewDepartments() {
+  function viewDepartments() {
     const sql = "SELECT * FROM departments";
     db.query(sql, params, (err, result) => {
     if (err) {
@@ -109,6 +115,8 @@ viewEmployees() {
   }
 
 
+      
+//using switch so that if then does not need to be used constantly in the 
 inquirer.prompt(mainMenuQuestions).then((choices) => {
   console.log(choices.choicesMainMenu)
   const expr = choices.choicesMainMenu;
@@ -119,7 +127,7 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       break;
   
     case "Add Employee":
-      addEmployee();
+      addEmployeeFunction();
       console.log("Adding an employee.")
       break;
     
@@ -144,7 +152,7 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       break;
     
     case "Add Department":
-      console.log("")
+      console.log("Adding department.")
   
   
       break;
@@ -153,6 +161,7 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       console.log("You have exited the emmployee database. ");
       process.exit();
       break;
+    
     default:
       console.log(`Sorry, we are out of ${expr}.`);
   }
