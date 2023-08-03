@@ -32,28 +32,33 @@ const mainMenuQuestions = [
   },
 ];
 
-const addEmployeeQuestion = [
+const addEmployee = [
   {
-    name: "addEmployeeQuestion",
-    choices: "list",
-    message: "Would you like to add an employee?",
-    choices: ["YES", "NO"],
+    type: 'input',
+    message: "What is the future employee's first name?",
+    name: 'firstName',
   },
+  {
+    type: 'input',
+    message: "What is the future employee's last name?",
+    name: 'lastName',
+  },
+  {
+    type: 'list',
+    name: 'role',
+    message: "What is the future employee's role in the company?",
+    choices: [roles],
+  },
+  {
+    type: 'list',
+    name: 'manager',
+    message: "Who is the future employee's manager?"
+  }
 ];
 
-const addDepartmentQuestion = [
+const addDepartment[
   {
-    name: "addDepartmentQuestion",
-    choices: "list",
-    message: "Would you like to add a department?",
-    choices: ["YES", "NO"],
-  },
-];
-
-const departmentAdded = [
-  {
-    name: "departmentAdded",
-    type: "checkbox",
+    
   },
 ];
 
@@ -66,43 +71,48 @@ const updateEmployeeRole = [
   },
 ];
 
-const viewAllroles = [
-  {
-    name: "viewAllroles",
-    choices: "list",
-    message: " Would you like to view all roles?",
-    choices: ["YES", "NO"],
-  },
-];
 
 inquirer.prompt(mainMenuQuestions).then((choices) => {
   console.log(choices.choicesMainMenu)
   const expr = choices.choicesMainMenu;
   switch (expr) {
     case "View All Employees":
-      console.log("view all employess selected");
+    //   db.query(sql, params, (err, result) => {
+    // if (err) {
+    //   res.status(400).json({ error: err.message });
+    //   return;
+    //   //checking error message first we would return a success method if we switched order....
+    // // }
+    // res.json({
+    //   message: 'success',
+    //   data: body
+    // });
+      console.log("View All Employees");
       break;
+    
     case "Add Employee":
-      
       break;
+    
     case "Update Employee Role":
-
       break;
+    
     case "View All Roles":
-
+      console.log("View All Roles")
       break;
+    
     case "Add Role":
-
       break;
+    
     case "View All Departments":
-
+      console
       break;
-    case "View All Departments":
-
+    
+    case "Add Department":
       break;
+    
     case "Quit":
-      console.log('You have exited the emmployee database. ')
-      process.exit()
+      console.log("You have exited the emmployee database. ");
+      process.exit();
       break;
     default:
       console.log(`Sorry, we are out of ${expr}.`);
