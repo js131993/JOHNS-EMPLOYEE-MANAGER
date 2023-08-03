@@ -1,5 +1,6 @@
 const mysql = require("mysql2");
-const inquirer = require("inquirer")
+const inquirer = require("inquirer");
+const { Query } = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 
 const db = mysql.createConnection(
   {
@@ -52,24 +53,60 @@ const addEmployee = [
   {
     type: 'list',
     name: 'manager',
-    message: "Who is the future employee's manager?"
+    message: "Who is the future employee's manager?",
+    choices: [null, ...employees]
   }
 ];
 
-const addDepartment[
+const addDepartment = [
   {
-    
+    name: "department",
+    type: "input",
+    message: "Please enter the name of the new department."
   },
 ];
 
 const updateEmployeeRole = [
   {
-    name: "updateEmployeeRole",
-    choices: "list",
-    message: "Would you like to update and employee role?",
-    choices: ["YES", "NO"],
+    name: "pickEmployee",
+    type: "list",
+    message: "Select the employee you would like to update."
+    choices: [employees],
   },
+  {
+    name: "updatedRole",
+    type: "list",
+    message: "Select the employee's new role in the company.",
+    choices: [roles],
+  }
 ];
+
+viewEmployees() {
+  const sql = "SELECT * from view_all_employees";
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    };
+  };
+
+  viewRoles() {
+    const sql = "SELECT * FROM rolels";
+    db.query(sql, params, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+    }
+  };
+
+  viewDepartments() {
+    const sql = "SELECT * FROM departments";
+    db.query(sql, params, (err, result) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+  }
 
 
 inquirer.prompt(mainMenuQuestions).then((choices) => {
@@ -77,37 +114,39 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
   const expr = choices.choicesMainMenu;
   switch (expr) {
     case "View All Employees":
-    //   db.query(sql, params, (err, result) => {
-    // if (err) {
-    //   res.status(400).json({ error: err.message });
-    //   return;
-    //   //checking error message first we would return a success method if we switched order....
-    // // }
-    // res.json({
-    //   message: 'success',
-    //   data: body
-    // });
-      console.log("View All Employees");
+      viewEmployees();
+      console.log("View all employees.");
       break;
-    
+  
     case "Add Employee":
+      addEmployee();
+      console.log("Adding an employee.")
       break;
     
     case "Update Employee Role":
+      updateEmployeeRole();
+      console.log("Update employee role.")
       break;
     
     case "View All Roles":
+      viewRoles()
       console.log("View All Roles")
       break;
     
     case "Add Role":
+      addRole()
+      console.log("Add role to employee")
       break;
     
     case "View All Departments":
-      console
+      viewDepartments()
+      console.log("View All Departments")
       break;
     
     case "Add Department":
+      console.log("")
+  
+  
       break;
     
     case "Quit":
@@ -118,11 +157,9 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       console.log(`Sorry, we are out of ${expr}.`);
   }
 
-});
+);
 
 
-// const
+function viewEmployees() {
 
-
-
-//when updating you must make a new variable
+}
