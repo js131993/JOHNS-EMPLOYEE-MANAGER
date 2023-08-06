@@ -73,7 +73,8 @@ function addEmployee () {
   // inquirer
   //   .prompt(addEmployee)
   //   .then
-  const addEmployeeQuestions = [
+  let roles = viewRoles();
+  let addEmployeeQuestions = [
     {
       type: "input",
       message: "What is the future employee's first name?",
@@ -101,11 +102,13 @@ function addEmployee () {
 
   function viewRoles() {
     const sql = "SELECT * FROM roles";
-    db.query(sql, params, (err, result) => {
+    db.query(sql, null, (err, result) => {
       if (err) {
-        res.status(400).json({ error: err.message });
+        console.log("error");
         return;
+        //need the return for the console.log(error)
       }
+      return result;
     });
   }
 
