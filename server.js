@@ -1,7 +1,7 @@
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const { Query } = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 
+//create connection only takes one argument (object)
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -9,7 +9,6 @@ const db = mysql.createConnection(
     password: "password",
     database: "db",
   },
-  console.log(`Connected to the movies_db database.`)
 );
 
 // No middleware because it is not a server application(such as APIs)
@@ -32,33 +31,11 @@ const mainMenuQuestions = [
     ],
   },
 ];
+//the questions can not be defined in the global scope(move these to their functions)
 
-const addEmployee = [
-  {
-    type: 'input',
-    message: "What is the future employee's first name?",
-    name: 'firstName',
-  },
-  {
-    type: 'input',
-    message: "What is the future employee's last name?",
-    name: 'lastName',
-  },
-  {
-    type: 'list',
-    name: 'role',
-    message: "What is the future employee's role in the company?",
-    choices: [roles],
-  },
-  {
-    type: 'list',
-    name: 'manager',
-    message: "Who is the future employee's manager?",
-    choices: [null, ...employees]
-  }
-];
 
-const addDepartment = [
+
+const addDepartmentQuestions = [
   {
     name: "department",
     type: "input",
@@ -66,7 +43,7 @@ const addDepartment = [
   },
 ];
 
-const updateEmployeeRole = [
+const updateEmployeeRoleQuestions = [
   {
     name: "pickEmployee",
     type: "list",
@@ -87,33 +64,61 @@ function viewEmployees() {
     if (err) {
       res.status(400).json({ error: err.message });
       return;
-    };
+    }
+  });
+}
 
 //having trouble building function
-function addEmployeeFunction () {
-  inquirer
-    .prompt(addEmployee)
-    .then
+function addEmployee () {
+  // inquirer
+  //   .prompt(addEmployee)
+  //   .then
+  const addEmployeeQuestions = [
+    {
+      type: "input",
+      message: "What is the future employee's first name?",
+      name: "firstName",
+    },
+    {
+      type: "input",
+      message: "What is the future employee's last name?",
+      name: "lastName",
+    },
+    {
+      type: "list",
+      name: "role",
+      message: "What is the future employee's role in the company?",
+      choices: [roles],
+    },
+    {
+      type: "list",
+      name: "manager",
+      message: "Who is the future employee's manager?",
+      choices: [null, ...employees],
+    },
+  ];
 }
 
   function viewRoles() {
-    const sql = "SELECT * FROM rolels";
+    const sql = "SELECT * FROM roles";
     db.query(sql, params, (err, result) => {
       if (err) {
         res.status(400).json({ error: err.message });
         return;
       }
-    }
-  };
-
-  function viewDepartments() {
-    const sql = "SELECT * FROM departments";
-    db.query(sql, params, (err, result) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
+    });
   }
 
+    function viewDepartments() {
+      const sql = "SELECT * FROM departments";
+      db.query(sql, params, (err, result) => {
+        if (err) {
+          res.status(400).json({ error: err.message });
+          return;
+        }
+      });
+    }
+//calling existing functions
 
       
 //using switch so that if then does not need to be used constantly in the 
@@ -127,7 +132,7 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       break;
   
     case "Add Employee":
-      addEmployeeFunction();
+      addEmployee();
       console.log("Adding an employee.")
       break;
     
@@ -150,20 +155,17 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       viewDepartments()
       console.log("View All Departments")
       break;
-    
+    //all take in arguments
     case "Add Department":
+      addDepartment()
       console.log("Adding department.")
-  
-  
+
       break;
-    
     case "Quit":
       console.log("You have exited the emmployee database. ");
       process.exit();
-      break;
-    
     default:
       console.log(`Sorry, we are out of ${expr}.`);
   }
-
+}
 );

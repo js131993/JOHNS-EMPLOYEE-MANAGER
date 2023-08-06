@@ -12,13 +12,13 @@ CREATE TABLE roles(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(50),
     department_id INT,
-    salary DECIMAL,
+    salary DECIMAL
 );
 
-CREATE TABLE view_all_employees (
+CREATE TABLE employees (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     role_id VARCHAR(50),
-    manager_id VARCHAR(50),
+    manager_id VARCHAR(50)
 );
