@@ -59,12 +59,13 @@ const updateEmployeeRoleQuestions = [
 ];
 
 function viewEmployees() {
-  const sql = "SELECT * from view_all_employees";
-  db.query(sql, params, (err, result) => {
+  const sql = "SELECT * from employees";
+  db.query(sql, null, (err, result) => {
     if (err) {
-      res.status(400).json({ error: err.message });
+      console.log("errors");
       return;
     }
+    return result;
   });
 }
 
@@ -74,6 +75,7 @@ function addEmployee () {
   //   .prompt(addEmployee)
   //   .then
   let roles = viewRoles();
+  let employees = viewEmployees();
   let addEmployeeQuestions = [
     {
       type: "input",
@@ -96,6 +98,7 @@ function addEmployee () {
       name: "manager",
       message: "Who is the future employee's manager?",
       choices: [null, ...employees],
+      //... is a spread operator, taking employees and sticking into array, allowing you to make more choices... it can be null and allow more choices
     },
   ];
 }
