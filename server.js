@@ -167,8 +167,3 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
   }
 
 );
-
-
-function viewEmployees() {
-
-}
