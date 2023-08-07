@@ -12,7 +12,9 @@ VALUES ( "Sales Lead", 1 , 10000),
        ( "Account Manager", 3, 90000),
        ( "Accountant", 3, 60000),
        ( "Legal Team Lead", 4, 150000),
-       ( "Lawyer", 4, 170000);
+       ( "Lawyer", 4, 170000),
+       FOREIGN KEY (department_id),
+        REFERENCES departments(id);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("John", "Harvard" , 1, null),

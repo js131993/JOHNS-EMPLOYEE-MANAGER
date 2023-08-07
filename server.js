@@ -90,6 +90,8 @@ function addEmployee() {
         lastName: answers.lastName,
         role: answer.role
       }
+      let manager =  answers.manager;
+      db.update(())
 
 
       */
