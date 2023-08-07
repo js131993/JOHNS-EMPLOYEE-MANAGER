@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+const mysql = require('mysql2');
 const inquirer = require("inquirer");
 
 //create connection only takes one argument (object)
@@ -6,7 +6,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "db",
+  database: "allemployee_db",
 });
 
 // No middleware because it is not a server application(such as APIs)
@@ -86,9 +86,18 @@ function addEmployee() {
       //answers will have information for addEmployeeQuestions which will be used for the add employees table
       /*
 
+
       */
       console.log(answers);
-    });
+    })
+   .catch((error) => {
+    if (error.isTtyError) {
+      console.log("Error")
+    } else {
+      console.log("This function works")
+    }
+  })
+  
 }
 
 function viewRoles() {
@@ -175,6 +184,11 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
     case "Quit":
       break;
   }
-});
+}).catch(error => console.log(error));
 
-//
+
+
+process.on("exit", (code) => {
+  console.log(`About to exit with code: ${code}`);
+});
+//use above for any error that
