@@ -52,7 +52,7 @@ function viewEmployees() {
 //having trouble building function
 function addEmployee() {
   let roles = viewRoles();
-  let employees = viewEmployees();
+  let allEmployees = viewEmployees();
   let addEmployeeQuestions = [
     {
       type: "input",
@@ -74,7 +74,7 @@ function addEmployee() {
       type: "list",
       name: "manager",
       message: "Who is the future employee's manager?",
-      choices: [null, ...employees],
+      choices: [null, ...allEmployees],
       //... is a spread operator, taking employees and sticking into array, allowing you to make more choices... it can be null and allow more choices
     },
   ];
@@ -85,6 +85,11 @@ function addEmployee() {
     .then((answers) => {
       //answers will have information for addEmployeeQuestions which will be used for the add employees table
       /*
+      let const employeeNew ={
+        firstName: answers.firstName,
+        lastName: answers.lastName,
+        role: answer.role
+      }
 
 
       */
