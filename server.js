@@ -158,7 +158,7 @@ function viewDepartments() {
   });
 }
 
-function addDepartment {
+function addDepartment (){
   let departments = viewDepartments();
   let addDepartmentQuestions = [
   {
