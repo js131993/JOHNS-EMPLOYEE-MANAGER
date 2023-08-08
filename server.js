@@ -1,12 +1,15 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const inquirer = require("inquirer");
+let db = {};
 
 //create connection only takes one argument (object)
-const db = mysql.createConnection({
+mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
   database: "allemployee_db",
+}).then(result => {
+  db = result;
 });
 
 // No middleware because it is not a server application(such as APIs)
@@ -28,6 +31,10 @@ const mainMenuQuestions = [
     ],
   },
 ];
+
+function formatDataAsTableAndPrint(data, headers) {
+   
+}
 //the questions can not be defined in the global scope(move these to their functions)
 function viewEmployees() {
   const sql = "SELECT * from employees";
@@ -39,6 +46,8 @@ function viewEmployees() {
     return result;
   });
 }
+//this will also include a join.....
+
 
 function addEmployee() {
   let roles = viewRoles();
@@ -88,25 +97,16 @@ function addEmployee() {
       console.log(answers);
     })
    .catch((error) => {
-    if (error.isTtyError) {
-      console.log("Error")
-    } else {
-      console.log("This function works")
-    }
+     console.log("error", error);
   })
   
 }
 
-function viewRoles() {
-  const sql = "SELECT * FROM roles";
-  db.query(sql, null, (err, result) => {
-    if (err) {
-      console.log("error");
-      return;
-      //need the return for the console.log(error)
-    }
-    return result;
-  });
+async function viewRoles() {
+  const sql = `SELECT r.id, title, salary, department_name department FROM allemployee_db.roles r
+JOIN allemployee_db.departments d ON r.department_id = d.id`;
+  const [rows] = await db.execute(sql);
+    return rows;
 }
 
 function updateEmmployeeRole() {
@@ -147,14 +147,10 @@ function updateEmmployeeRole() {
   })
 }
 
-function viewDepartments() {
-  const sql = "SELECT * FROM departments";
-  db.query(sql, params, (err, result) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
-    }
-  });
+async function viewDepartments() {
+  const sql = `SELECT * from departments`;
+  const [rows] = await db.execute(sql);
+    return rows;
 }
 
 function addDepartment (){
@@ -188,12 +184,12 @@ function addDepartment (){
 //calling existing functions
 
 //using switch so that if then does not need to be used constantly in the
-inquirer.prompt(mainMenuQuestions).then((choices) => {
+inquirer.prompt(mainMenuQuestions).then(async (choices) => {
   const expr = choices.choicesMainMenu;
   switch (expr) {
     case "View All Employees":
       viewEmployees();
-      console.log("View all employees.");
+      console.table("View all employees.");
       break;
 
     case "Add Employee":
@@ -207,8 +203,8 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       break;
 
     case "View All Roles":
-      viewRoles();
-      console.log("View All Roles");
+      const roles = await viewRoles();
+      console.table(roles);
       break;
 
     case "Add Role":
@@ -216,9 +212,10 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       console.log("Add role to employee");
       break;
 
+    //below was changed to variable and called with console.table
     case "View All Departments":
-      viewDepartments();
-      console.log("View All Departments");
+      const departments = await viewDepartments();
+      console.table(departments);
       break;
     //all take in arguments
     case "Add Department":
@@ -233,7 +230,5 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
 
 
 
-process.on("exit", (code) => {
-  console.log(`About to exit with code: ${code}`);
-});
+
 //use above for any error that
