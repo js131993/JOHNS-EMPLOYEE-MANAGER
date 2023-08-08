@@ -40,7 +40,6 @@ function viewEmployees() {
   });
 }
 
-//having trouble building function
 function addEmployee() {
   let roles = viewRoles();
   let allEmployees = viewEmployees();
