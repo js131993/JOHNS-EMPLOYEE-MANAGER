@@ -29,15 +29,6 @@ const mainMenuQuestions = [
   },
 ];
 //the questions can not be defined in the global scope(move these to their functions)
-
-const addDepartmentQuestions = [
-  {
-    name: "department",
-    type: "input",
-    message: "Please enter the name of the new department.",
-  },
-];
-
 function viewEmployees() {
   const sql = "SELECT * from employees";
   db.query(sql, null, (err, result) => {
@@ -91,7 +82,7 @@ function addEmployee() {
         role: answer.role
       }
       let manager =  answers.manager;
-      db.update(())
+      db.employees.update(())
 
 
       */
@@ -122,7 +113,7 @@ function viewRoles() {
 function updateEmmployeeRole() {
   let roles = viewRoles();
   let employees = viewEmployees();
-  const updateEmployeeRoleQuestions = [
+  let updateEmployeeRoleQuestions = [
     {
       name: "pickEmployee",
       type: "list",
@@ -136,6 +127,25 @@ function updateEmmployeeRole() {
       choices: [roles],
     },
   ];
+  inquirer
+    .prompt(updateEmployeeRoleQuestions)
+    //prompt returns a promise and that's why we can change,
+    //make sure library supports terminology
+    .then((answers) => {
+      //answers will have information for addEmployeeQuestions which will be used for the add employees table
+      /*
+
+
+      */
+      console.log(answers);
+    })
+   .catch((error) => {
+    if (error.isTtyError) {
+      console.log("Error")
+    } else {
+      console.log("This function works")
+    }
+  })
 }
 
 function viewDepartments() {
@@ -146,6 +156,35 @@ function viewDepartments() {
       return;
     }
   });
+}
+
+function addDepartment {
+  let departments = viewDepartments();
+  let addDepartmentQuestions = [
+  {
+    name: "department",
+    type: "input",
+    message: "Please enter the name of the new department.",
+  },
+  ];
+  inquirer
+    .prompt(addDepartmentQuestions)
+    //prompt returns a promise and that's why we can change,
+    //make sure library supports terminology
+    .then((answers) => {
+      //answers will have information for addEmployeeQuestions which will be used for the add employees table
+      /*
+
+      */
+      console.log(answers);
+    })
+   .catch((error) => {
+    if (error.isTtyError) {
+      console.log("Error")
+    } else {
+      console.log("This function works")
+    }
+  })
 }
 //calling existing functions
 
@@ -174,7 +213,7 @@ inquirer.prompt(mainMenuQuestions).then((choices) => {
       break;
 
     case "Add Role":
-      addRole();
+      updateEmmployeeRole();
       console.log("Add role to employee");
       break;
 
