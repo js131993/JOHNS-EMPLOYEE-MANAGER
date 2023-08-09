@@ -32,12 +32,9 @@ const mainMenuQuestions = [
   },
 ];
 
-function formatDataAsTableAndPrint(data, headers) {
-   
-}
 //the questions can not be defined in the global scope(move these to their functions)
 async function viewEmployees() {
-   const sql = `SELECT  CONCAT(e.first_name, ' ', e.last_name) name, r.title, CONCAT(m.first_name, ' ', m.last_name) manager FROM allemployee_db.employees e JOIN allemployee_db.roles r ON r.id = e.role_id LEFT JOIN allemployee_db.employees m ON m.id = e.manager_id `;
+   const sql = `SELECT  CONCAT(e.first_name, ' ', e.last_name) name, r.title, CONCAT(m.first_name, ' ', m.last_name) manager FROM employees e JOIN roles r ON r.id = e.role_id LEFT JOIN employees m ON m.id = e.manager_id `;
   const [rows] = await db.execute(sql);
     return rows;
 }
@@ -98,8 +95,8 @@ function addEmployee() {
 }
 
 async function viewRoles() {
-  const sql = `SELECT r.id, title, salary, department_name department FROM allemployee_db.roles r
-JOIN allemployee_db.departments d ON r.department_id = d.id`;
+  const sql = `SELECT r.id, title, salary, department_name department FROM roles r
+JOIN departments d ON r.department_id = d.id`;
   const [rows] = await db.execute(sql);
     return rows;
 }
@@ -171,59 +168,66 @@ function addDepartment (){
    .catch((error) => {
     if (error.isTtyError) {
       console.log("Error")
-    } else {
-      console.log("This function works")
-    }
+    } 
   })
 }
 //calling existing functions
 
 //using switch so that if then does not need to be used constantly in the
-inquirer.prompt(mainMenuQuestions).then(async (choices) => {
-  const expr = choices.choicesMainMenu;
-  switch (expr) {
-    case "View All Employees":
-      const employees = await viewEmployees();
-      console.table(employees);
-      break;
-
-    case "Add Employee":
-      addEmployee();
-      console.log("Adding an employee.");
-      break;
-
-    case "Update Employee Role":
-      updateEmployeeRole();
-      console.log("Update employee role.");
-      break;
-
-    case "View All Roles":
-      const roles = await viewRoles();
-      console.table(roles);
-      break;
-
-    case "Add Role":
-      updateEmmployeeRole();
-      console.log("Add role to employee");
-      break;
-
-    //below was changed to variable and called with console.table
-    case "View All Departments":
-      const departments = await viewDepartments();
-      console.table(departments);
-      break;
-    //all take in arguments
-    case "Add Department":
-      addDepartment();
-      console.log("Adding department.");
-
-      break;
-    case "Quit":
-      break;
-  }
-}).catch(error => console.log(error));
+let running = true;
 
 
 
 
+
+function askMainQuestions() {
+  inquirer
+    .prompt(mainMenuQuestions)
+    .then(async (choices) => {
+      const expr = choices.choicesMainMenu;
+      switch (expr) {
+        case "View All Employees":
+          const employees = await viewEmployees();
+          console.table(employees);
+          break;
+
+        case "Add Employee":
+          addEmployee();
+          console.log("Adding an employee.");
+          break;
+
+        case "Update Employee Role":
+          updateEmployeeRole();
+          console.log("Update employee role.");
+          break;
+
+        case "View All Roles":
+          const roles = await viewRoles();
+          console.table(roles);
+          break;
+
+        case "Add Role":
+          updateEmmployeeRole();
+          console.log("Add role to employee");
+          break;
+
+        //below was changed to variable and called with console.table
+        case "View All Departments":
+          const departments = await viewDepartments();
+          console.table(departments);
+          break;
+        //all take in arguments
+        case "Add Department":
+          addDepartment();
+          console.log("Adding department.");
+
+          break;
+        case "Quit":
+          break;
+      }
+      askMainQuestions();
+    })
+}
+
+askMainQuestions();
 //use above for any error that
