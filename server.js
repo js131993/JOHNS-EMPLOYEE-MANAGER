@@ -36,15 +36,10 @@ function formatDataAsTableAndPrint(data, headers) {
    
 }
 //the questions can not be defined in the global scope(move these to their functions)
-function viewEmployees() {
-  const sql = "SELECT * from employees";
-  db.query(sql, null, (err, result) => {
-    if (err) {
-      console.log("errors");
-      return;
-    }
-    return result;
-  });
+async function viewEmployees() {
+   const sql = `SELECT  CONCAT(e.first_name, ' ', e.last_name) name, r.title, CONCAT(m.first_name, ' ', m.last_name) manager FROM allemployee_db.employees e JOIN allemployee_db.roles r ON r.id = e.role_id LEFT JOIN allemployee_db.employees m ON m.id = e.manager_id `;
+  const [rows] = await db.execute(sql);
+    return rows;
 }
 //this will also include a join.....
 
@@ -188,8 +183,8 @@ inquirer.prompt(mainMenuQuestions).then(async (choices) => {
   const expr = choices.choicesMainMenu;
   switch (expr) {
     case "View All Employees":
-      viewEmployees();
-      console.table("View all employees.");
+      const employees = await viewEmployees();
+      console.table(employees);
       break;
 
     case "Add Employee":
