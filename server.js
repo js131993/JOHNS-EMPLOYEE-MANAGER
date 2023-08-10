@@ -163,36 +163,18 @@ async function viewDepartments() {
     return rows;
 }
 
-function addDepartment (){
-  let departments = viewDepartments();
+async function promptAddDepartmentQuestions(db) {
+  let departments = await readDepartments(db);
   let addDepartmentQuestions = [
-  {
-    name: "department",
-    type: "input",
-    message: "Please enter the name of the new department.",
-  },
+    {
+      name: "department",
+      type: "input",
+      message: "Please enter the name of the new department.",
+    },
   ];
-  inquirer
-    .prompt(addDepartmentQuestions)
-    //prompt returns a promise and that's why we can change,
-    //make sure library supports terminology
-    .then((answers) => {
-      //answers will have information for addEmployeeQuestions which will be used for the add employees table
-      /*
-
-      */
-      console.log(answers);
-    })
-   .catch((error) => {
-    if (error.isTtyError) {
-      console.log("Error")
-    } 
-  })
+  let answers = await inquirer.prompt(addDepartmentQuestions);
 }
-//calling existing functions
 
-//using switch so that if then does not need to be used constantly in the
-let running = true;
 
 
 
