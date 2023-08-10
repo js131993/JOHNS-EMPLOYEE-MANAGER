@@ -1,17 +1,24 @@
-const mysql = require('mysql2/promise');
+const mysql = require("mysql2/promise");
 const inquirer = require("inquirer");
-let db = {};
+const { readRoles, createRole } = require("./db/role");
+const {
+  readEmployees,
+  updateEmmployeeRole,
+  createEmployee,
+} = require("./db/employee");
+const { readDepartments, createDepartment } = require("./db/department");
 
 //create connection only takes one argument (object)
-mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "allemployee_db",
-}).then(result => {
-  db = result;
-});
-
+mysql
+  .createConnection({
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "allemployee_db",
+  })
+  .then((conn) => {
+    main(conn);
+  });
 // No middleware because it is not a server application(such as APIs)
 
 const mainMenuQuestions = [
@@ -101,21 +108,21 @@ JOIN departments d ON r.department_id = d.id`;
     return rows;
 }
 
-function updateEmmployeeRole() {
-  let roles = viewRoles();
-  let employees = viewEmployees();
+async function updateEmployeeRole() {
+  let roles = await viewRoles();
+  let employees = await viewEmployees();
   let updateEmployeeRoleQuestions = [
     {
       name: "pickEmployee",
       type: "list",
       message: "Select the employee you would like to update.",
-      choices: [employees],
+      choices: employees.map( (e) => e.name),
     },
     {
       name: "updatedRole",
       type: "list",
       message: "Select the employee's new role in the company.",
-      choices: [roles],
+      choices: roles.map((r) => r.title),
     },
   ];
   inquirer
@@ -197,8 +204,8 @@ function askMainQuestions() {
           break;
 
         case "Update Employee Role":
-          updateEmployeeRole();
-          console.log("Update employee role.");
+          const updateEmployee = await updateEmployeeRole();
+          console.log(updateEmployee);
           break;
 
         case "View All Roles":
@@ -220,10 +227,9 @@ function askMainQuestions() {
         case "Add Department":
           addDepartment();
           console.log("Adding department.");
-
           break;
         case "Quit":
-          break;
+          process.exit();
       }
       askMainQuestions();
     })
