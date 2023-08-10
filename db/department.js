@@ -6,10 +6,16 @@ async function readDepartments(db) {
 }
 
 // Add department to the Database.
-async function createDepartment(db, role) {
-  const sql = ``;
-  await db.execute(sql);
+async function createDepartment(db, department) {
+  const sql = `INSERT INTO departments (department_name) VALUES (?);`;
+  await db.execute(sql, [
+    department.name,
+  ]
+  );
+  //reminder! underscore goes with sql not javascript
   // No return
 }
+
+//These functions are being called from the switch statements.
 
 module.exports = { readDepartments, createDepartment };

@@ -20,7 +20,7 @@ mysql
     main(conn);
   });
 // No middleware because it is not a server application(such as APIs)
-
+//Can not do anything until connection is established
 async function main(db) {
   const mainMenuQuestions = [
     {
@@ -75,7 +75,9 @@ async function main(db) {
         break;
       // Add a new Department to the Application.
       case "Add Department":
-        await createDepartment(db);
+        const department = await promptAddDepartmentQuestions(db);
+        await createDepartment(db, department);
+        //db is connection , you need to have department as second parameters
         console.log("Adding department.");
         break;
       case "Quit":
@@ -145,16 +147,17 @@ async function promptUpdateEmployeeRoleQuestions(db) {
 
 
 async function promptAddDepartmentQuestions(db) {
-  let departments = await readDepartments(db);
   let addDepartmentQuestions = [
     {
-      name: "department",
+      name: "name",
       type: "input",
       message: "Please enter the name of the new department.",
     },
   ];
   let answers = await inquirer.prompt(addDepartmentQuestions);
+  return answers;
 }
+//answers is object
 
 
 

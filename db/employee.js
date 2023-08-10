@@ -23,16 +23,19 @@ async function updateEmployeeRole(db, employeeId, employeeRole) {
 }
 
 // Add new Employee to Database.
+//insert is used for creating records in a table for sql
 async function createEmployee(db, employee) {
   const sql = `
   INSERT INTO employees (first_name, last_name, role_id, manager_id)
   VALUES(?, ?, ?, ?);`;
+    //????  mysql inputs parameters and the ? are placeholders
   await db.execute(sql, [
     employee.firstName,
     employee.lastName,
     employee.role,
     employee.manager,
   ]);
+    //second parameter is an array of values, these are the values that are going into ? placeholder
   // Create does not return anything. We are not selecting any data from the DB. Just adding.
 }
 
