@@ -93,9 +93,9 @@ async function viewEmployees() {
 //this will also include a join.....
 
 
-function addEmployee() {
-  let roles = viewRoles();
-  let allEmployees = viewEmployees();
+async function promptAddEmployeeQuestions(db) {
+  let roles = await readRoles(db);
+  let employees = await readEmployees(db);
   let addEmployeeQuestions = [
     {
       type: "input",
@@ -111,39 +111,21 @@ function addEmployee() {
       type: "list",
       name: "role",
       message: "What is the future employee's role in the company?",
-      choices: [roles],
+      choices: roles.map((r) => ({ name: r.title, value: r.id })),
     },
     {
       type: "list",
       name: "manager",
       message: "Who is the future employee's manager?",
-      choices: [null, ...allEmployees],
+      choices: [
+        { name: "No Manager", value: null },
+        ...employees.map((e) => ({ name: e.name, value: e.id })),
+      ],
       //... is a spread operator, taking employees and sticking into array, allowing you to make more choices... it can be null and allow more choices
     },
   ];
-  inquirer
-    .prompt(addEmployeeQuestions)
-    //prompt returns a promise and that's why we can change,
-    //make sure library supports terminology
-    .then((answers) => {
-      //answers will have information for addEmployeeQuestions which will be used for the add employees table
-      /*
-      let const employeeNew ={
-        firstName: answers.firstName,
-        lastName: answers.lastName,
-        role: answer.role
-      }
-      let manager =  answers.manager;
-      db.employees.update(())
-
-
-      */
-      console.log(answers);
-    })
-   .catch((error) => {
-     console.log("error", error);
-  })
-  
+  let answers = await inquirer.prompt(addEmployeeQuestions);
+  return answers;
 }
 
 async function viewRoles() {
@@ -153,42 +135,26 @@ JOIN departments d ON r.department_id = d.id`;
     return rows;
 }
 
-async function updateEmployeeRole() {
-  let roles = await viewRoles();
-  let employees = await viewEmployees();
+async function promptUpdateEmployeeRoleQuestions(db) {
+  let roles = await readRoles(db);
+  let employees = await readEmployees(db);
   let updateEmployeeRoleQuestions = [
     {
       name: "pickEmployee",
       type: "list",
       message: "Select the employee you would like to update.",
-      choices: employees.map( (e) => e.name),
+      choices: employees.map((e) => ({ name: e.name, value: e.id })),
     },
     {
       name: "updatedRole",
       type: "list",
       message: "Select the employee's new role in the company.",
-      choices: roles.map((r) => r.title),
+      choices: roles.map((r) => ({ name: r.title, value: r.id })),
     },
   ];
-  inquirer
-    .prompt(updateEmployeeRoleQuestions)
-    //prompt returns a promise and that's why we can change,
-    //make sure library supports terminology
-    .then((answers) => {
-      //answers will have information for addEmployeeQuestions which will be used for the add employees table
-      /*
 
-
-      */
-      console.log(answers);
-    })
-   .catch((error) => {
-    if (error.isTtyError) {
-      console.log("Error")
-    } else {
-      console.log("This function works")
-    }
-  })
+  let answers = await inquirer.prompt(updateEmployeeRoleQuestions);
+  console.log(answers);
 }
 
 async function viewDepartments() {
