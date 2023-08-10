@@ -84,14 +84,6 @@ async function main(db) {
   }
 }
 
-//the questions can not be defined in the global scope(move these to their functions)
-async function viewEmployees() {
-   const sql = `SELECT  CONCAT(e.first_name, ' ', e.last_name) name, r.title, CONCAT(m.first_name, ' ', m.last_name) manager FROM employees e JOIN roles r ON r.id = e.role_id LEFT JOIN employees m ON m.id = e.manager_id `;
-  const [rows] = await db.execute(sql);
-    return rows;
-}
-//this will also include a join.....
-
 
 async function promptAddEmployeeQuestions(db) {
   let roles = await readRoles(db);
@@ -128,12 +120,6 @@ async function promptAddEmployeeQuestions(db) {
   return answers;
 }
 
-async function viewRoles() {
-  const sql = `SELECT r.id, title, salary, department_name department FROM roles r
-JOIN departments d ON r.department_id = d.id`;
-  const [rows] = await db.execute(sql);
-    return rows;
-}
 
 async function promptUpdateEmployeeRoleQuestions(db) {
   let roles = await readRoles(db);
@@ -157,11 +143,6 @@ async function promptUpdateEmployeeRoleQuestions(db) {
   console.log(answers);
 }
 
-async function viewDepartments() {
-  const sql = `SELECT * from departments`;
-  const [rows] = await db.execute(sql);
-    return rows;
-}
 
 async function promptAddDepartmentQuestions(db) {
   let departments = await readDepartments(db);
