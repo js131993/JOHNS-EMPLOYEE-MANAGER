@@ -23,5 +23,3 @@ VALUES ("John", "Harvard" , 1, null),
        ("Ryan", "Gosling" , 3, 4),
        ("Will", "Smith" , 5, null);
        
-
-
