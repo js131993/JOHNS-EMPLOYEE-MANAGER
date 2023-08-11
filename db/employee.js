@@ -16,9 +16,17 @@ async function readEmployees(db) {
 }
 
 // Update an Employee's Role in the Database.
-async function updateEmployeeRole(db, employeeId, employeeRole) {
-  const sql = ``;
-  await db.execute(sql);
+async function updateEmployeeRole(db, employeeId, employeeRoleId) {
+  const sql = `
+  UPDATE employees
+  SET role_id = ?
+  WHERE id =?`;
+  //where filters the result set down to matiching the where clause
+  //WHERE allows you to focus on one id
+  await db.execute(sql, [
+    employeeRoleId,
+    employeeId
+  ]);
   // Update does not return anything. We are not selecting any data from the DB. Just updating.
 }
 
