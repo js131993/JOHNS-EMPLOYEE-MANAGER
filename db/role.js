@@ -8,8 +8,8 @@ async function readRoles(db) {
 
 // Add role to the Database.
 async function createRole(db, role) {
-  const sql = ``;
-  await db.execute(sql);
+  const sql = `INSERT INTO roles (title, department_id, salary) VALUES(?, ?, ?)`;
+  await db.execute(sql, [role.title, role.departmentId, role.salary]);
   // No return
 }
 
