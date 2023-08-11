@@ -3,7 +3,7 @@ const inquirer = require("inquirer");
 const { readRoles, createRole } = require("./db/role");
 const {
   readEmployees,
-  updateEmmployeeRole,
+  updateEmployeeRole,
   createEmployee,
 } = require("./db/employee");
 const { readDepartments, createDepartment } = require("./db/department");
@@ -56,7 +56,8 @@ async function main(db) {
         break;
       // Change an Employee's Role in the Application.
       case "Update Employee Role":
-        await promptUpdateEmployeeRoleQuestions(db);
+        let answers = await promptUpdateEmployeeRoleQuestions(db);
+        await updateEmployeeRole(db, answers.employeeId, answers.roleId);
         console.log("Update employee role.");
         break;
       // Get a table of all Roles in the Application.
@@ -66,8 +67,9 @@ async function main(db) {
         break;
       // Add a new Role to the Application.
       case "Add Role":
-        await createRole(db);
-        break;
+         let roleAnswers = await promptAddRoleQuestsions(db);
+         await createRole(db, roleAnswers);
+         break;
       // Get a table of all Departments in the Application.
       case "View All Departments":
         const departments = await readDepartments(db);
@@ -122,27 +124,30 @@ async function promptAddEmployeeQuestions(db) {
   return answers;
 }
 
+async 
 
 async function promptUpdateEmployeeRoleQuestions(db) {
   let roles = await readRoles(db);
   let employees = await readEmployees(db);
   let updateEmployeeRoleQuestions = [
     {
-      name: "pickEmployee",
+      name: "employeeId",
       type: "list",
       message: "Select the employee you would like to update.",
       choices: employees.map((e) => ({ name: e.name, value: e.id })),
+      //create a new arrray, new object with name and value
+      //what gets displayed in the variable is the id.
+      //what you can see in the list and what gets stored
     },
     {
-      name: "updatedRole",
+      name: "roleId",
       type: "list",
       message: "Select the employee's new role in the company.",
       choices: roles.map((r) => ({ name: r.title, value: r.id })),
     },
   ];
-
   let answers = await inquirer.prompt(updateEmployeeRoleQuestions);
-  console.log(answers);
+  return answers;
 }
 
 
