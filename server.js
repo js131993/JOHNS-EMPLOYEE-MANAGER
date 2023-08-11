@@ -67,7 +67,7 @@ async function main(db) {
         break;
       // Add a new Role to the Application.
       case "Add Role":
-         let roleAnswers = await promptAddRoleQuestsions(db);
+         let roleAnswers = await promptAddRoleQuestions(db);
          await createRole(db, roleAnswers);
          break;
       // Get a table of all Departments in the Application.
@@ -124,7 +124,33 @@ async function promptAddEmployeeQuestions(db) {
   return answers;
 }
 
-async 
+async function promptAddRoleQuestions(db) {
+  let departments = await readDepartments(db);
+
+  let addRoleQuestions = [
+    {
+      type: "input",
+      message: "What is the title of this role?",
+      name: "title",
+    },
+    {
+      type: "list",
+      message: "Which department is this role in?",
+      name: "departmentId",
+      choices: departments.map((d) => ({
+        name: d.department_name,
+        value: d.id,
+      }))
+    },
+    {
+      type: "number",
+      name: "salary",
+      message: "What is the salary of this role?",
+    },
+  ];
+  let answers = await inquirer.prompt(addRoleQuestions);
+  return answers;
+}
 
 async function promptUpdateEmployeeRoleQuestions(db) {
   let roles = await readRoles(db);
