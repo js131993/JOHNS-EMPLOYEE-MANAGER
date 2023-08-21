@@ -16,6 +16,9 @@ Repo: https://github.com/js131993/JOHNS-EMPLOYEE-MANAGER
 
 ## Visual
 Screen shot video given below.
+https://github.com/js131993/JOHNS-EMPLOYEE-MANAGER/assets/127684772/f046ec78-60ad-42a6-88fd-13388e5905db
+
+
 [Video Displaying JOHNS-EMPLOYEE-MANAGER](https://github.com/js131993/JOHNS-EMPLOYEE-MANAGER/assets/127684772/4ed800e9-5749-4d17-b973-7e7b37e82059)
 
 
