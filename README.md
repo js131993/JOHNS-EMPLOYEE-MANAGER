@@ -16,7 +16,8 @@ Repo: https://github.com/js131993/JOHNS-EMPLOYEE-MANAGER
 
 ## Visual
 Screen shot video given below.
-[Untitled_ Aug 21, 2023 2_53 PM.webm](https://github.com/js131993/JOHNS-EMPLOYEE-MANAGER/assets/127684772/8abe0ebd-c91f-4383-b6c3-8b8e7a113b75)
+[Untitled_ Aug 21, 2023 2_53 PM.webm](https://github.com/js131993/JOHNS-EMPLOYEE-MANAGER/assets/127684772/4ed800e9-5749-4d17-b973-7e7b37e82059)
+
 
 ## Installation
 1. node modules were downloaded for project. The inquirer package was used as well for asking questions.
